@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Profile{% endblock %}
+
+{% load gravatar %}
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <h1 class="mb-4"><strong>Profile</strong></h1>
+    <img src="{% gravatar_url user.email 200 %}" class="img-thumbnail rounded mb-4" alt="...">
+    <dl class="row w-auto justify-content-center">
+        <dt class="col-lg-6 text-center text-xl-end">username</dt>
+        <dd class="col-xl-6 text-center text-xl-start">{{ user }}</dd>
+        <dt class="col-xl-6 text-center text-xl-end">email address</dt>
+        <dd class="col-xl-6 text-center text-xl-start">
+            <a href="{% url 'account_email' %}" class="link-primary">Manage</a>
+        </dd>
+        <dt class="col-xl-6 text-center text-xl-end">user registered</dt>
+        <dd class="date_time col-xl-6 text-center text-xl-start" id="date_joined">{{ user.date_joined }}</dd>
+        <dt class="col-xl-6 text-center text-xl-end">notes count</dt>
+        <dd class="col-xl-6 text-center text-xl-start">{{ notes_count }} {% if notes_count == 1 %}note{% else %}notes{% endif %}</dd>
+    </dl>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    let date_joined = document.getElementById("date_joined");
+    let utc = moment.utc(date_joined.innerHTML, 'MMMM D, YYYY, h:mm a');
+    let local = moment(utc).local()
+    date_joined.innerHTML = local.format('MMMM D, YYYY, h:mm a');
+</script>
+{% endblock %}

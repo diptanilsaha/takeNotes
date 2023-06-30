@@ -1,0 +1,79 @@
+{% extends "account/base.html" %}
+
+{% block title %}Manage Email Addresses{% endblock %}
+
+{% load i18n %}
+{% load crispy_forms_tags %}
+
+{% block content %}
+<div class="add-notes container-fluid mx-auto">
+    <h3><strong>{% trans "Manage E-mail Addresses" %}</strong></h3>
+    {% if user.emailaddress_set.all %}
+    <p>{% trans 'The following e-mail addresses are associated with your account:' %}</p>
+
+    <form action="{% url 'account_email' %}" class="email_list" method="post">
+        {% csrf_token %}
+        <div class="d-flex flex-column justify-content-center align-items-center px-2 py-2 border">
+
+                {% for emailaddress in user.emailaddress_set.all %}
+                <div class="d-flex flex-row justify-content-center align-items-start px-2 py-2">
+                    <label for="email_radio_{{forloop.counter}}" class="{% if emailaddress.primary %}primary_email{%endif%}">
+
+                    <input id="email_radio_{{forloop.counter}}" type="radio" name="email" {% if emailaddress.primary or user.emailaddress_set.count == 1 %}checked="checked"{%endif %} value="{{emailaddress.email}}"/>
+
+                        <strong>{{ emailaddress.email }}</strong>
+                        {% if emailaddress.verified %}
+                        <span class="verified">{% trans "Verified" %}</span>
+                        {% else %}
+                        <span class="unverified">{% trans "Unverified" %}</span>
+                        {% endif %}
+                        {% if emailaddress.primary %}<span class="primary">{% trans "Primary" %}</span>{% endif %}
+                    </label>
+                </div>
+                {% endfor %}
+
+                <div class="container d-flex flex-column flex-md-row justify-content-center align-items-center mt-3">
+                    <button class="btn btn-outline-primary mb-2 mx-auto me-md-2" type="submit" name="action_primary">{% trans 'Make Primary' %}</button>
+                    <button class="btn btn-outline-dark mb-2 mx-auto me-md-2" type="submit" name="action_send">{% trans 'Re-send Verification' %}</button>
+                    <button class="btn btn-outline-danger mb-2 mx-auto" type="submit" name="action_remove">{% trans 'Remove' %}</button>
+                </div>
+        </div>
+    </form>
+
+
+    {% else %}
+    <p><strong>{% trans 'Warning:'%}</strong> {% trans "You currently do not have any e-mail address set up. You should
+        really add an e-mail address so you can receive notifications, reset your password, etc." %}</p>
+
+    {% endif %}
+
+    {% if can_add_email %}
+    <div class="container d-flex flex-column justify-content-center align-items-center mt-4">
+        <h4><strong>{% trans "Add E-mail Address" %}</strong></h4>
+
+        <div class="w-100 form-in form-width">
+            <form method="post" action="{% url 'account_email' %}">
+                {% crispy form %}
+            </form>
+        </div>
+    </div>
+    {% endif %}
+
+</div>
+{% endblock %}
+
+{% block extra_body %}
+<script type="text/javascript">
+(function() {
+  var message = "{% trans 'Do you really want to remove the selected e-mail address?' %}";
+  var actions = document.getElementsByName('action_remove');
+  if (actions.length) {
+    actions[0].addEventListener("click", function(e) {
+      if (! confirm(message)) {
+        e.preventDefault();
+      }
+    });
+  }
+})();
+</script>
+{% endblock %}

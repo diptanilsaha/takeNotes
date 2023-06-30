@@ -1,0 +1,80 @@
+.form-width {
+    max-width: 400px;
+}
+
+.form-in {
+    padding: 2rem;
+}
+
+.button-bold {
+    font-weight: bold !important;
+}
+
+.notes {
+    font-family: monospace;
+    font-size: 15px;
+    box-sizing: border-box;
+    overflow-x: auto;
+}
+
+.notes > ol {
+    padding: 0 0 0 55px !important;
+}
+
+.notes li.li1 {
+    list-style-type: decimal;
+}
+
+.de1 {
+    background-color: #fff;
+    padding: 0 8px;
+}
+
+.notes li.li1 .de1 {
+    white-space: pre-wrap;
+}
+
+li.li1 {
+    margin: 0 0 0 -6px;
+}
+
+.add-notes {
+    width: 50%;
+}
+
+.asteriskField {
+    color: red;
+}
+
+.verified, .unverified, .primary {
+    font-style: italic;
+}
+
+#noteBox {
+    font-family: monospace;
+    font-size: 15px;
+    resize: none;
+    min-height: 150px;
+	overflow: hidden;
+	box-sizing: border-box;
+}
+
+@media (max-width: 1199.98px) {
+    .add-notes {
+        width: 100%;
+    }
+}
+
+@media (max-width: 767.98px) {
+    .notes {
+        font-size: 12px;
+    }
+
+    .add-notes {
+        width: 100%;
+    }
+
+    #noteBox {
+        font-size: 10px;
+    }
+}

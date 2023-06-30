@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ user.username }}'s notes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center justify-content-xl-between g-1 gy-3 g-xl-3 px-4">
+    <div class="col-10 col-lg-6 text-center text-xl-start">
+        <h1 class="mb-0"><strong>{{ user }}'s notes</strong></h1>
+    </div>
+    <div class="col-10 col-lg-6 text-center text-xl-end">
+        <a href="{% url 'notes_create' %}" class="btn btn-outline-dark">+ add notes</a>
+    </div>
+</div>
+{% if not page_obj %}
+<div class="my-5 text-center">
+    <p class="lead mb-0">Hello, seems like you have no notes. Click '+ add notes' to create your first note.</p>
+</div>
+{% else %}
+<div class="container overflow-hidden my-5">
+    <div class="row row-cols-2 row-cols-xl-5 g-1 gy-3 g-xl-3 justify-content-center justify-content-xl-start">
+        {% for obj in page_obj %}
+        <div class="col-10 col-xl-4">
+            <div class="card">
+                <div class="card-body text-center text-xl-start">
+                    <h5><strong>{{ obj.title }}</strong></h5>
+                    <p class="card-text">{{ obj.description }}</p>
+                    <div class="d-flex flex-row justify-content-between align-items-center">
+                        <h6 class="mb-0 text-muted"><i class="bi bi-calendar-date"></i> <span class="date_time">{{ obj.date_created }}</span></h6>
+                        <a href="{% url 'notes_detail' pk=obj.id %}" class="btn btn-dark">view <strong>Note</strong></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</div>
+<nav aria-label="Pagination" class="mt-5 mx-xl-auto">
+    <ul class="pagination justify-content-center">
+        {% if page_obj.has_previous %}
+        <li class="page-item">
+            <a class="page-link link-dark" href="?page=1" aria-label="Previous">
+                <span aria-hidden="true">&laquo; first</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link link-dark" href="?page={{ page_obj.previous_page_number }}" aria-label="Previous">
+                <span aria-hidden="true">previous</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item"><span class="page-link text-dark pe-none">&laquo; first</span></li>
+        <li class="page-item"><span class="page-link text-dark pe-none">previous</span></li>
+        {% endif %}
+        <li class="page-item"><span class="page-link text-dark pe-none">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span></li>
+        {% if page_obj.has_next %}
+        <li class="page-item">
+            <a class="page-link link-dark" href="?page={{ page_obj.next_page_number }}" aria-label="Next">
+                <span aria-hidden="true">next</span>
+            </a>
+        </li>
+        <li class="page-item">
+            <a class="page-link link-dark" href="?page={{ page_obj.paginator.num_pages }}" aria-label="Next">
+                <span aria-hidden="true">last &raquo;</span>
+            </a>
+        </li>
+        {% else %}
+        <li class="page-item"><span class="page-link text-dark pe-none">next</span></li>
+        <li class="page-item"><span class="page-link text-dark pe-none">last &raquo;</span></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    let utc_time = document.querySelectorAll('span.date_time');
+    for(let i=0; i<utc_time.length; i++) {
+        let utc = moment.utc(utc_time[i].innerHTML, 'MMMM D, YYYY, h:mm a');
+        let local = moment(utc).local();
+        utc_time[i].innerHTML = local.format('MMMM D, YYYY, h:mm a');
+    }
+</script>
+{% endblock %}
+

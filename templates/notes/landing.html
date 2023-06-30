@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    <title>takeNotes.</title>
+</head>
+<body>
+    <main>
+        <div class="toast-container position-fixed bottom-0 end-0 p-3">
+            {% if messages %}
+            {% for message in messages %}
+            <div class="toast text-bg-dark align-items-center fade show" role="alert" aria-live="assertive" aria-atomic="true">
+                <div class="d-flex">
+                  <div class="toast-body">
+                    {{ message }}
+                  </div>
+                  <button type="button" class="btn-close me-2 m-auto btn-close-white" data-bs-dismiss="toast" aria-label="Close"></button>
+                </div>
+            </div>
+            {% endfor %}
+            {% endif %}
+        </div>
+        <div class="vh-100 d-flex justify-content-center align-items-center">
+            <div class="d-flex flex-column justify-content-center align-items-center mb-4">
+                <div class="mb-3 text-center">
+                    <h2><strong>takeNotes.</strong></h2>
+                </div>
+                <div class="d-flex flex-column gap-3">
+                    <div class="d-flex flex-row justify-content-center align-items-center gap-3">
+                        <a href="{% url 'account_login' %}" class="btn btn-dark py-2"><strong>Log In</strong></a>
+                        <a href="{% url 'account_signup' %}" class="btn btn-dark py-2"><strong>Sign Up</strong></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    <footer class="footer start-0 end-0 d-flex justify-content-center align-items-center container position-fixed bottom-0 mb-2">
+        <p class="text-center">A note taking application made using Django by <a href="" class="link-dark">@diptanilsaha</a></p>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js" integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz" crossorigin="anonymous"></script>
+</body>
+</html>

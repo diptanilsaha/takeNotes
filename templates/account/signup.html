@@ -1,0 +1,16 @@
+{% extends "account/basebox.html" %}
+
+{% block title %}Sign up{% endblock %}
+
+{% block content %}
+{% load crispy_forms_tags %}
+<form action="{% url 'account_signup' %}" method="post" class="form-in border border-dark-subtle shadow">
+    <div class="mb-4 text-center">
+        <h2><strong>Sign up</strong></h2>
+    </div>
+    <div class="mb-4 text-center">
+        <p>Already have a account? <a href="{% url 'account_login' %}" class="link-dark"><strong>Log in</strong></a> now.</p>
+    </div>
+    {% crispy form %}
+</form>
+{% endblock %}

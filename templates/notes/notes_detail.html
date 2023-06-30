@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ object.title }}{% endblock %}
+
+{% block content %}
+<div class="d-flex flex-column justify-content-center align-items-center">
+    <div class="row w-100 justify-content-center justify-content-xl-between mb-2">
+        <div class="col-12 col-xl-7 text-center text-xl-start">
+            <h3><strong>{{ object.title }}</strong></h3>
+            <p>{{ object.description }}</p>
+        </div>
+        <div class="col-12 col-xl-5">
+            <div class="d-flex flex-column text-xl-end align-items-center align-items-xl-end">
+                <h6 class="mb-3 text-muted"><i class="bi bi-calendar-date"></i> <span id="date_created">{{ object.date_created }}</span></h6>
+                <div class="d-flex flex-row">
+                    <a href="" class="btn btn-outline-dark me-2"><i class="bi bi-download"></i> download</a>
+                    <button class="btn btn-outline-danger" type="button" data-bs-toggle="modal" data-bs-target="#deleteNote"><i class="bi bi-trash-fill"></i> delete</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container-fluid mt-2">
+    <div class="notes border bg-body-secondary">
+        <ol class="mb-0">
+            {% for line in content %}
+            <li class="li1"><div class="de1">{{ line }}</div></li>
+            {% endfor %}
+        </ol>
+    </div>
+</div>
+{% endblock %}
+
+{% block modal %}
+
+<div class="modal fade modal-sheet p-4 py-md-5" tabindex="-1" role="dialog" id="deleteNote">
+    <form action="{% url 'notes_delete' pk=object.id %}" method="post">
+        {% csrf_token %}
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content rounded-3 shadow">
+                <div class="modal-body p-4 text-center">
+                    <h5 class="mb-2 text-danger"><strong><i class="bi bi-exclamation-triangle-fill"></i> WARNING!</strong></h5>
+                    <p class="mb-0">Are you sure, you want to delete <strong>{{ object.title }}</strong>? Remember, deleted notes cannot be recovered.</p>
+                </div>
+                <div class="modal-footer flex-nowrap p-0">
+                    <button type="submit" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 border-end text-danger">
+                        <strong>Yes, delete</strong>
+                    </button>
+                    <button type="button" class="btn btn-lg btn-link fs-6 text-decoration-none col-6 py-3 m-0 rounded-0 text-dark" data-bs-dismiss="modal">
+                        No, keep it
+                    </button>
+
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_body %}
+<script>
+    let date_created = document.getElementById("date_created");
+    let utc = moment.utc(date_created.innerHTML, 'MMMM D, YYYY, h:mm a');
+    let local = moment(utc).local()
+    date_created.innerHTML = local.format('MMMM D, YYYY, h:mm a');
+</script>
+{% endblock %}
